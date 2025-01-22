@@ -3,8 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CodSoft - Certificate Verification</title>
+    <title>Certificate Verification</title>
     <link rel="stylesheet" href="verify-styles.css">
+    <style>
+        .hidden { display: none; }
+        .result-row { margin: 5px 0; }
+        .alternate { background-color: #f0f0f0; }
+    </style>
 </head>
 <body>
     <header>
@@ -37,26 +42,12 @@
 
         <div id="certificateResult" class="certificate-result hidden">
             <h2>Certificate Result</h2>
-            <div class="result-container">
-                <div class="result-row">
-                    <span>Student Name: Abhishek Yadav </span>
-                </div>
-                <div class="result-row alternate">
-                    <span>Domain: Python Full Stack Development</span>
-                </div>
-                <div class="result-row">
-                    <span>Duration: 4 weeks</span>
-                </div>
-                <div class="result-row alternate">
-                    <span>Certification No: 925684g</span>
-                </div>
-                <div class="result-row">
-                    <span>Starting Date: 01/Oct/2024</span>
-                </div>
-                <div class="result-row alternate">
-                    <span>Award Date: 01/Dec/2024</span>
-                </div>
+            <div class="result-container" id="resultContainer">
+                <!-- Certificate details will be inserted here -->
             </div>
+        </div>
+        <div id="invalidResult" class="certificate-result hidden">
+            <h2>Invalid Certificate ID</h2>
         </div>
     </main>
 
@@ -64,6 +55,54 @@
         <p>© 2025 • Built with <a href="#" class="footer-link">CodSoft</a></p>
     </footer>
 
-    <script src="verify-script.js"></script>
+    <script>
+        const certificates = {
+            "925684g": {
+                studentName: "Abhishek Yadav",
+                domain: "Python Full Stack Development",
+                duration: "4 weeks",
+                certificationNo: "925684g",
+                startingDate: "01/Oct/2024",
+                awardDate: "01/Dec/2024"
+            },
+
+
+            "56845g": {
+                studentName: "Vansh  Agrawal",
+                domain: "Web Development ",
+                duration: "4 Weeks",
+                certificationNo: "56845g",
+                startingDate: "01/Oct/2024",
+                awardDate: "01/Nov/2025"
+            }
+            // Add more certificates here
+        };
+
+        function searchCertificate() {
+            const code = document.getElementById('certificateCode').value;
+            const resultContainer = document.getElementById('resultContainer');
+            const certificateResult = document.getElementById('certificateResult');
+            const invalidResult = document.getElementById('invalidResult');
+
+            resultContainer.innerHTML = '';
+            certificateResult.classList.add('hidden');
+            invalidResult.classList.add('hidden');
+
+            if (certificates[code]) {
+                const certificate = certificates[code];
+                resultContainer.innerHTML = `
+                    <div class="result-row"><span>Student Name: ${certificate.studentName}</span></div>
+                    <div class="result-row alternate"><span>Domain: ${certificate.domain}</span></div>
+                    <div class="result-row"><span>Duration: ${certificate.duration}</span></div>
+                    <div class="result-row alternate"><span>Certification No: ${certificate.certificationNo}</span></div>
+                    <div class="result-row"><span>Starting Date: ${certificate.startingDate}</span></div>
+                    <div class="result-row alternate"><span>Award Date: ${certificate.awardDate}</span></div>
+                `;
+                certificateResult.classList.remove('hidden');
+            } else {
+                invalidResult.classList.remove('hidden');
+            }
+        }
+    </script>
 </body>
 </html>
